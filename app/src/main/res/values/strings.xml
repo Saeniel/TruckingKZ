@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">AzatCP</string>
+    <string name="stringAbout">Автор проекта: Дата написания: Преподователь:</string>
+</resources>
