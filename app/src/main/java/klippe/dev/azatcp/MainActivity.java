@@ -38,13 +38,18 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                boolean isTableEmpty = db.isTableEmpty();
                 cursor = db.getUser(getEtLogin.getText().toString());
 
-                if (getEtPassword.getText().toString().equals(cursor.getString(0))) {
-                    Intent intent = new Intent(MainActivity.this, EventActivity.class);
-                    startActivity(intent);
-                } else{
-                    Toast.makeText(MainActivity.this,"Error login" , Toast.LENGTH_SHORT).show();
+                if(cursor != null) {
+                    if (getEtPassword.getText().toString().equals(cursor.getString(0))) {
+                        Intent intent = new Intent(MainActivity.this, EventActivity.class);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(MainActivity.this, "Login error", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(MainActivity.this, "Login error", Toast.LENGTH_SHORT).show();
                 }
             }
         });
