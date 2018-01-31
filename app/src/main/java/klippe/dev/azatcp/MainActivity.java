@@ -19,15 +19,14 @@ public class MainActivity extends AppCompatActivity {
     EditText getEtPassword;
     @BindView(R.id.btnLogin)
     Button getBtnLogin;
+    @BindView(R.id.btnRegister)
+    Button getBtnRegistration;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-
-        Intent intent = new Intent(MainActivity.this, EventActivity.class);
-        startActivity(intent);
 
         getBtnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -38,6 +37,14 @@ public class MainActivity extends AppCompatActivity {
                 } else{
                     Toast.makeText(MainActivity.this,"Error login" , Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+
+        getBtnRegistration.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, RegistrationActivity.class);
+                startActivity(intent);
             }
         });
     }
