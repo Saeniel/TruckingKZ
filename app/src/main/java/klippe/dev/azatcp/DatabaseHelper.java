@@ -21,7 +21,7 @@ public class DatabaseHelper extends SQLiteAssetHelper {
     }
 
     public Cursor addUser(String login, String password, String name, String imagePath) {
-        SQLiteDatabase db = getReadableDatabase();
+        SQLiteDatabase db = getWritableDatabase();
         SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
         qb.setTables("users");
         String sql = "INSERT INTO users VALUES (?, ?, ?, ?)";
@@ -30,13 +30,12 @@ public class DatabaseHelper extends SQLiteAssetHelper {
     }
 
     public Cursor getUser(String login) {
-
         SQLiteDatabase db = getReadableDatabase();
         SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
-        qb.setTables("users");
-        String sql = "";
-        Cursor c = db.rawQuery(sql, new String[]{});
-
+        String sqlTable = "users";
+        qb.setTables(sqlTable);
+        String sql = "SELECT password FROM users WHERE login = " + login;
+        Cursor c = db.rawQuery(sql, null);
         c.moveToFirst();
         return c;
     }

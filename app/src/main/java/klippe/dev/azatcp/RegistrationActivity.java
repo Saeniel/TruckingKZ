@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -15,7 +14,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 import butterknife.BindView;
@@ -49,7 +47,6 @@ public class RegistrationActivity extends AppCompatActivity {
     private DatabaseHelper db;
     Context context;
     String login, password, name;
-    byte[] userPic;
     Uri uriToImage;
 
     private int PICK_IMAGE_REQUEST = 1;
@@ -98,10 +95,11 @@ public class RegistrationActivity extends AppCompatActivity {
                     name = getEtNameRegister.getText().toString();
 
                     if (uriToImage != null) {
-
                         db = new DatabaseHelper(RegistrationActivity.this);
-                        cursor = db.addUser(login, password, name, userPic);
+                        cursor = db.addUser(login, password, name, uriToImage.toString());
                     }
+                    Intent intent = new Intent(RegistrationActivity.this, MainActivity.class);
+                    startActivity(intent);
                 }
             }
         });
