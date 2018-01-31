@@ -21,7 +21,7 @@ public class EventActivity extends AppCompatActivity {
     ImageView getIvAbout;
     @BindView(R.id.ivProfile)
     ImageView getIvProfile;
-    ArrayList<Event> products = new ArrayList<Event>();
+    ArrayList<Event> events = new ArrayList<Event>();
     EventAdapter boxAdapter;
 
     @Override
@@ -31,7 +31,7 @@ public class EventActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         // создаем адаптер
         fillData();
-        boxAdapter = new EventAdapter(this, products);
+        boxAdapter = new EventAdapter(this, events);
         // настраиваем список
         getEventList.setAdapter(boxAdapter);
 
@@ -47,6 +47,14 @@ public class EventActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(EventActivity.this, ProfileActivity.class);
+                ArrayList<Event> bufevents = new ArrayList<Event>();
+                for (Event a:events
+                     ) {
+                    if(a.checked){
+                        bufevents.add(a);
+                    }
+                }
+                intent.putExtra("listEvent",bufevents);
                 startActivity(intent);
             }
         });
@@ -55,7 +63,7 @@ public class EventActivity extends AppCompatActivity {
     // генерируем данные для адаптера
     void fillData() {
         for (int i = 1; i <= 20; i++) {
-            products.add(new Event("Title " + i, "descriptin " + i,
+            events.add(new Event("Title " + i, "descriptin " + i,
                     R.drawable.test));
         }
     }

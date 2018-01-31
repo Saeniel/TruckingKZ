@@ -1,10 +1,12 @@
 package klippe.dev.azatcp;
 
+import java.io.Serializable;
+
 /**
  * Created by Developer on 29.01.2018.
  */
 
-public class Event {
+public class Event implements Serializable {
 
     String title;
     String description;
