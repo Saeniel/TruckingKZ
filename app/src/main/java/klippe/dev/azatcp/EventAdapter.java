@@ -66,6 +66,7 @@ public class EventAdapter extends BaseAdapter {
         ((TextView) view.findViewById(R.id.tvDescription)).setText(event.descriptin);
         ((TextView) view.findViewById(R.id.tvDate)).setText(event.date);
         ((TextView) view.findViewById(R.id.tvCategory)).setText(event.category);
+        ((TextView) view.findViewById(R.id.tvPlace)).setText(event.place);
         imageView = ((ImageView) view.findViewById(R.id.ivPicture));
 
         Picasso.with(ctx).load(event.img).into(imageView);
