@@ -40,7 +40,7 @@ public class DatabaseHelper extends SQLiteAssetHelper {
         SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
         String sqlTable = "users";
         qb.setTables(sqlTable);
-        String sql = "SELECT password FROM users WHERE login = " + login;
+        String sql = "SELECT password FROM users WHERE login = '" + login + "'";
         try {
             c = db.rawQuery(sql, null);
             c.moveToFirst();
