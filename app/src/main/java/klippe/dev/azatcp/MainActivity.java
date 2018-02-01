@@ -33,7 +33,8 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         db = new DatabaseHelper(MainActivity.this);
-
+        Intent intent = new Intent(MainActivity.this, EventActivity.class);
+        startActivity(intent);
         getBtnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

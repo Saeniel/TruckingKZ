@@ -9,13 +9,21 @@ import java.io.Serializable;
 public class Event implements Serializable {
 
     String title;
-    String description;
-    int image;
-    boolean checked = false;
+    String descriptin;
+    String img;
+    String place;
+    String category;
+    boolean checked;
 
-    public Event(String title, String description, int image) {
+    public Event() {
+    }
+
+    public Event(String title, String descriptin, String img, String place, String category, boolean checked) {
         this.title = title;
-        this.description = description;
-        this.image = image;
+        this.descriptin = descriptin;
+        this.img = img;
+        this.place = place;
+        this.category = category;
+        this.checked = checked;
     }
 }

@@ -61,9 +61,9 @@ public class EventAdapter extends BaseAdapter {
         // заполняем View в пункте списка данными из товаров: наименование, цена
         // и картинка
         ((TextView) view.findViewById(R.id.tvTtile)).setText(event.title);
-        ((TextView) view.findViewById(R.id.tvDescription)).setText(event.description);
+        ((TextView) view.findViewById(R.id.tvDescription)).setText(event.descriptin);
         imageView = ((ImageView) view.findViewById(R.id.ivPicture));
-        imageView.setImageResource(event.image);
+        //imageView.setImageResource(event.img);
 
         view.findViewById(R.id.btnAdd).setOnClickListener(new View.OnClickListener() {
             @Override

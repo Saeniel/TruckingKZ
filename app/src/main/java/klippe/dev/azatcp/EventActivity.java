@@ -8,6 +8,10 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 import butterknife.BindView;
@@ -62,9 +66,22 @@ public class EventActivity extends AppCompatActivity {
 
     // генерируем данные для адаптера
     void fillData() {
-        for (int i = 1; i <= 20; i++) {
-            events.add(new Event("Title " + i, "descriptin " + i,
-                    R.drawable.test));
+        String json = null;
+        try {
+            InputStream is = getAssets().open("event.JSON");
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+            json = new String(buffer, "UTF-8");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+
+        Gson gson = new Gson();
+        Event[] founderArray = gson.fromJson(json, Event[].class);
+        for(int i=0;i<founderArray.length;i++){
+            events.add(founderArray[i]);
         }
     }
 
