@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import butterknife.BindView;
@@ -14,14 +15,14 @@ import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity {
 
-    @BindView(R.id.etLogin)
+    @BindView(R.id.etLoginRegister)
     EditText getEtLogin;
-    @BindView(R.id.etPassword)
+    @BindView(R.id.etPasswordRegister)
     EditText getEtPassword;
     @BindView(R.id.btnLogin)
     Button getBtnLogin;
     @BindView(R.id.btnRegister)
-    Button getBtnRegistration;
+    TextView getBtnRegistration;
 
     private Cursor cursor;
     private DatabaseHelper db;

@@ -34,9 +34,6 @@ public class RegistrationActivity extends AppCompatActivity {
     @BindView(R.id.etNameRegister)
     EditText getEtNameRegister;
 
-    @BindView(R.id.btnPictureRegister)
-    Button getBtnPictureRegister;
-
     @BindView(R.id.imvUserPic)
     ImageView getImvUserPicture;
 
@@ -72,7 +69,7 @@ public class RegistrationActivity extends AppCompatActivity {
         setContentView(R.layout.activity_registration);
         ButterKnife.bind(this);
 
-        getBtnPictureRegister.setOnClickListener(new View.OnClickListener() {
+        getImvUserPicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent();

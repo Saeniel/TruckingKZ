@@ -1,4 +1,30 @@
 <resources>
-    <string name="app_name">AzatCP</string>
+    <string name="app_name">Мероприятия</string>
     <string name="stringAbout">Автор проекта: Дата написания: Преподователь:</string>
+    <string name="action_settings">Settings</string>
+    <string name="text_password">Пароль</string>
+    <string name="text_login">Логин</string>
+    <string name="text_singup">Вы еще не зарегистрированы?</string>
+    <string name="text_sing_up">Регистрация</string>
+    <string name="btn_text_sing_in">Войти в систему</string>
+    <string name="text_ballow">БАЛЛОВ</string>
+    <string name="nav_mainpage">На главную</string>
+    <string name="nav_myshedule">Мое расписание</string>
+    <string name="nav_ads">Объявления</string>
+    <string name="nav_city_catalog">Городской каталог</string>
+    <string name="nav_ibusnessman">Я предприниматель</string>
+    <string name="nav_search">Поиск</string>
+    <string name="nav_add_event">Добавить событие</string>
+    <string name="nav_add_ad">Добавить объявление</string>
+    <string name="nav_feedback">Обратная связь</string>
+    <string name="nav_setting">Настройки</string>
+    <string name="nav_swap_score">Обмен баллов</string>
+    <string name="nav_qr_code">Считывание QR</string>
+    <string name="nav_about">О проекте</string>
+    <string name="nav_profile">Мой профиль</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="test_string">onFailure() ==> дальше</string>
+    <string name="nav_logout">Выход</string>
 </resources>
