@@ -49,6 +49,13 @@ public class RegistrationActivity extends AppCompatActivity {
     private int PICK_IMAGE_REQUEST = 1;
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        cursor.close();
+        db.close();
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
@@ -84,6 +91,7 @@ public class RegistrationActivity extends AppCompatActivity {
         getBtnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 if(getEtLoginRegister.getText().toString().equals("") ||
                    getEtPasswordRegister.getText().toString().equals("") ||
                    getEtNameRegister.getText().toString().equals("") ||
@@ -96,6 +104,7 @@ public class RegistrationActivity extends AppCompatActivity {
 
                     db = new DatabaseHelper(RegistrationActivity.this);
                     cursor = db.addUser(login, password, name, uriToImage.toString());
+                    Toast.makeText(context, "User added", Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(RegistrationActivity.this, MainActivity.class);
                     startActivity(intent);
                 }
