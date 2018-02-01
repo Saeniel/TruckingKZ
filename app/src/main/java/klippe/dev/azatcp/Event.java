@@ -12,6 +12,7 @@ public class Event implements Serializable {
     String descriptin;
     String img;
     String place;
+    String date;
     String category;
     boolean checked;
 
