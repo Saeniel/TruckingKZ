@@ -25,6 +25,36 @@ public class DatabaseHelper extends SQLiteAssetHelper {
         mContext = context;
     }
 
+    public Cursor getUserName(String login) {
+        SQLiteDatabase db = getReadableDatabase();
+        SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
+        String sqlTable = "users";
+        qb.setTables(sqlTable);
+        String sql = "SELECT name FROM users WHERE login = '" + login + "'";
+        try {
+            c = db.rawQuery(sql, null);
+            c.moveToFirst();
+        } catch (Exception e) {
+            Toast.makeText(mContext, "No such user in database", Toast.LENGTH_LONG).show();
+        }
+        return c;
+    }
+
+    public Cursor getUserPic(String login) {
+        SQLiteDatabase db = getReadableDatabase();
+        SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
+        String sqlTable = "users";
+        qb.setTables(sqlTable);
+        String sql = "SELECT photo FROM users WHERE login = '" + login + "'";
+        try {
+            c = db.rawQuery(sql, null);
+            c.moveToFirst();
+        } catch (Exception e) {
+            Toast.makeText(mContext, "No such user in database", Toast.LENGTH_LONG).show();
+        }
+        return c;
+    }
+
     public Cursor addUser(String login, String password, String name, String imagePath) {
         SQLiteDatabase db = getWritableDatabase();
         SQLiteQueryBuilder qb = new SQLiteQueryBuilder();

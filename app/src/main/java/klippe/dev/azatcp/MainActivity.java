@@ -1,6 +1,8 @@
 package klippe.dev.azatcp;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -27,6 +29,10 @@ public class MainActivity extends AppCompatActivity {
     private Cursor cursor;
     private DatabaseHelper db;
 
+    public static final String APP_PREFERENCES = "mysettings";
+    public static final String APP_PREFERENCES_LOGIN = "login";
+    SharedPreferences mSettings;
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -51,9 +57,14 @@ public class MainActivity extends AppCompatActivity {
 
                 boolean isTableEmpty = db.isTableEmpty();
                 cursor = db.getUser(getEtLogin.getText().toString());
+                String login = getEtLogin.getText().toString();
 
                 if(cursor != null) {
                     if (getEtPassword.getText().toString().equals(cursor.getString(0))) {
+                        mSettings = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = mSettings.edit();
+                        editor.putString(APP_PREFERENCES_LOGIN, login);
+                        editor.apply();
                         Intent intent = new Intent(MainActivity.this, EventActivity.class);
                         startActivity(intent);
                     } else {
