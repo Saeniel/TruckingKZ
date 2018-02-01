@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context="klippe.dev.azatcp.ProfileActivity">
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/imvProfileUserPic"
         android:layout_width="100dp"
         android:layout_height="100dp"

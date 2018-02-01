@@ -18,11 +18,12 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProfileActivity extends AppCompatActivity {
 
     @BindView(R.id.imvProfileUserPic)
-    ImageView getProfileUserPic;
+    CircleImageView getProfileUserPic;
 
     @BindView(R.id.tvProfileName)
     TextView getProfileName;
