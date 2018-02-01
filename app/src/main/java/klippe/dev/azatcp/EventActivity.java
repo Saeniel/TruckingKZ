@@ -1,6 +1,10 @@
 package klippe.dev.azatcp;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -29,11 +33,38 @@ public class EventActivity extends AppCompatActivity {
     ArrayList<Event> events = new ArrayList<Event>();
     EventAdapter boxAdapter;
 
+    private Cursor cursorImage;
+    private DatabaseHelper db;
+    String login;
+
+    public static final String APP_PREFERENCES = "mysettings";
+    public static final String APP_PREFERENCES_LOGIN = "login";
+    SharedPreferences mSettings;
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        cursorImage.close();
+        db.close();
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_event);
         ButterKnife.bind(this);
+
+        db = new DatabaseHelper(EventActivity.this);
+
+        mSettings = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
+        if(mSettings.contains(APP_PREFERENCES_LOGIN)) {
+            login = mSettings.getString(APP_PREFERENCES_LOGIN, "");
+        }
+
+        cursorImage = db.getUserPic(login);
+        Uri pathToImg = Uri.parse(cursorImage.getString(0));
+        getIvProfile.setImageURI(pathToImg);
+
         // создаем адаптер
         fillData();
         boxAdapter = new EventAdapter(this, events);
