@@ -3,6 +3,9 @@ package klippe.dev.azatcp;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ImageView;
@@ -30,12 +33,21 @@ public class ProfileActivity extends AppCompatActivity {
     EventAdapter boxAdapter;
 
     private Cursor cursor;
+    private Cursor cursorImage;
     private DatabaseHelper db;
     String login;
 
     public static final String APP_PREFERENCES = "mysettings";
     public static final String APP_PREFERENCES_LOGIN = "login";
     SharedPreferences mSettings;
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        cursor.close();
+        cursorImage.close();
+        db.close();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +64,10 @@ public class ProfileActivity extends AppCompatActivity {
 
         cursor = db.getUserName(login);
         getProfileName.setText(cursor.getString(0));
+
+        cursorImage = db.getUserPic(login);
+        Uri pathToImg = Uri.parse(cursorImage.getString(0));
+        getProfileUserPic.setImageURI(pathToImg);
 
         events = (ArrayList<Event>) getIntent().getExtras().get("listEvent");
         boxAdapter = new EventAdapter(this, events);
