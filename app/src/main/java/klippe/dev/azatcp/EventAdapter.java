@@ -8,6 +8,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 
 /**
@@ -63,7 +65,8 @@ public class EventAdapter extends BaseAdapter {
         ((TextView) view.findViewById(R.id.tvTtile)).setText(event.title);
         ((TextView) view.findViewById(R.id.tvDescription)).setText(event.descriptin);
         imageView = ((ImageView) view.findViewById(R.id.ivPicture));
-        //imageView.setImageResource(event.img);
+
+        Picasso.with(ctx).load(event.img).into(imageView);
 
         view.findViewById(R.id.btnAdd).setOnClickListener(new View.OnClickListener() {
             @Override
