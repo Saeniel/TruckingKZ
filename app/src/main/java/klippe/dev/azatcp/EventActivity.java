@@ -3,7 +3,10 @@ package klippe.dev.azatcp;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -26,6 +29,8 @@ public class EventActivity extends AppCompatActivity {
     ImageView getIvAbout;
     @BindView(R.id.ivProfile)
     ImageView getIvProfile;
+    @BindView(R.id.etSearch)
+    EditText editText;
     ArrayList<Event> events = new ArrayList<Event>();
     EventAdapter boxAdapter;
 
@@ -63,6 +68,19 @@ public class EventActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+                boxAdapter.getFilter().filter(s.toString());
+            }
+        });
     }
 
     // генерируем данные для адаптера
@@ -95,6 +113,8 @@ public class EventActivity extends AppCompatActivity {
         }
         Toast.makeText(this, result, Toast.LENGTH_LONG).show();
     }
+
+
 }
 
 
