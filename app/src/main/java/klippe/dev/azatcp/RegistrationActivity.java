@@ -68,6 +68,8 @@ public class RegistrationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
         ButterKnife.bind(this);
+        context = getApplicationContext();
+        uriToImage = null;
 
         getImvUserPicture.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,17 +86,16 @@ public class RegistrationActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if(getEtLoginRegister.getText().toString().equals("") ||
                    getEtPasswordRegister.getText().toString().equals("") ||
-                   getEtNameRegister.getText().toString().equals("")) {
+                   getEtNameRegister.getText().toString().equals("") ||
+                        uriToImage == null) {
                     Toast.makeText(context, "Fill all of the fields", Toast.LENGTH_LONG).show();
                 } else {
                     login = getEtLoginRegister.getText().toString();
                     password = getEtPasswordRegister.getText().toString();
                     name = getEtNameRegister.getText().toString();
 
-                    if (uriToImage != null) {
-                        db = new DatabaseHelper(RegistrationActivity.this);
-                        cursor = db.addUser(login, password, name, uriToImage.toString());
-                    }
+                    db = new DatabaseHelper(RegistrationActivity.this);
+                    cursor = db.addUser(login, password, name, uriToImage.toString());
                     Intent intent = new Intent(RegistrationActivity.this, MainActivity.class);
                     startActivity(intent);
                 }
