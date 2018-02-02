@@ -72,12 +72,13 @@ public class DatabaseHelper extends SQLiteAssetHelper {
         SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
         String sqlTable = "users";
         qb.setTables(sqlTable);
-        String sql = "SELECT password FROM users WHERE login = '" + login + "'";
+        String sql = "SELECT login FROM users WHERE login = '" + login + "'";
         try {
             c = db.rawQuery(sql, null);
             c.moveToFirst();
         } catch (Exception e) {
-            Toast.makeText(mContext, "No such user in database", Toast.LENGTH_LONG).show();
+            e.printStackTrace();
+            c = null;
         }
         return c;
     }
@@ -102,6 +103,7 @@ public class DatabaseHelper extends SQLiteAssetHelper {
         }
         return false;
     }
+
     public boolean isTableEmpty() {
         SQLiteDatabase database = this.getReadableDatabase();
         int NoOfRows = (int) DatabaseUtils.queryNumEntries(database, "users");

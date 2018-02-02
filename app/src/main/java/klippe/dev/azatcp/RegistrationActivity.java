@@ -1,23 +1,12 @@
 package klippe.dev.azatcp;
 
-import android.Manifest;
-import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.DocumentsContract;
 import android.provider.MediaStore;
-import android.provider.SyncStateContract;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -25,11 +14,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import java.io.IOException;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Created by Saeniel on 31.01.2018.
@@ -99,7 +85,6 @@ public class RegistrationActivity extends AppCompatActivity {
             public void onClick(View view) {
                 // Create the Intent for Image Gallery.
                 Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-
                 // Start new activity with the LOAD_IMAGE_RESULTS to handle back the results when image is picked from the Image Gallery.
                 startActivityForResult(i, LOAD_IMAGE_RESULTS);
             }
@@ -120,10 +105,15 @@ public class RegistrationActivity extends AppCompatActivity {
                     name = getEtNameRegister.getText().toString();
 
                     db = new DatabaseHelper(RegistrationActivity.this);
-                    cursor = db.addUser(login, password, name, imagePath);
-                    Toast.makeText(context, "User added", Toast.LENGTH_LONG).show();
-                    Intent intent = new Intent(RegistrationActivity.this, MainActivity.class);
-                    startActivity(intent);
+
+                    try {
+                        cursor = db.addUser(login, password, name, imagePath);
+                        Toast.makeText(context, "User added", Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(RegistrationActivity.this, MainActivity.class);
+                        startActivity(intent);
+                    } catch (Exception e) {
+                        Toast.makeText(getBaseContext(), "User already exists", Toast.LENGTH_LONG).show();
+                    }
                 }
             }
         });
