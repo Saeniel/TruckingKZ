@@ -42,14 +42,6 @@ public class ProfileActivity extends AppCompatActivity {
     SharedPreferences mSettings;
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        cursor.close();
-        cursorImage.close();
-        db.close();
-    }
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);

@@ -4,9 +4,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -14,6 +18,7 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -40,13 +45,6 @@ public class EventActivity extends AppCompatActivity {
     public static final String APP_PREFERENCES = "mysettings";
     public static final String APP_PREFERENCES_LOGIN = "login";
     SharedPreferences mSettings;
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        cursorImage.close();
-        db.close();
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +92,22 @@ public class EventActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    public static Bitmap decodeUriToBitmap(Context mContext, Uri sendUri) {
+        Bitmap getBitmap = null;
+        try {
+            InputStream image_stream;
+            try {
+                image_stream = mContext.getContentResolver().openInputStream(sendUri);
+                getBitmap = BitmapFactory.decodeStream(image_stream);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return getBitmap;
     }
 
     // генерируем данные для адаптера

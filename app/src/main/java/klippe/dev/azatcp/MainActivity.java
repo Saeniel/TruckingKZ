@@ -34,13 +34,6 @@ public class MainActivity extends AppCompatActivity {
     SharedPreferences mSettings;
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        cursor.close();
-        db.close();
-    }
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
