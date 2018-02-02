@@ -9,6 +9,8 @@ import android.widget.Toast;
 
 import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
+import java.util.Objects;
+
 /**
  * Created by Saeniel on 31.01.2018.
  */
@@ -80,6 +82,26 @@ public class DatabaseHelper extends SQLiteAssetHelper {
         return c;
     }
 
+    public boolean getUser(String login, String pass) {
+        SQLiteDatabase db = getReadableDatabase();
+        SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
+        String sqlTable = "users";
+        qb.setTables(sqlTable);
+        String sql = "SELECT password FROM users WHERE login = '" + login + "'";
+        try {
+            c = db.rawQuery(sql, null);
+            c.moveToFirst();
+
+            if(Objects.equals(c.getString(0), pass)){
+                return true;
+            }else {
+                return false;
+            }
+        } catch (Exception e) {
+            Toast.makeText(mContext, "No such user in database", Toast.LENGTH_LONG).show();
+        }
+        return false;
+    }
     public boolean isTableEmpty() {
         SQLiteDatabase database = this.getReadableDatabase();
         int NoOfRows = (int) DatabaseUtils.queryNumEntries(database, "users");

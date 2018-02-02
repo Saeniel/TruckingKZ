@@ -58,10 +58,20 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 boolean isTableEmpty = db.isTableEmpty();
-                cursor = db.getUser(getEtLogin.getText().toString());
+               // cursor = db.getUser(getEtLogin.getText().toString());
                 String login = getEtLogin.getText().toString();
 
-                if(cursor != null) {
+                if(db.getUser(getEtLogin.getText().toString(),getEtPassword.getText().toString())){
+                    mSettings = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = mSettings.edit();
+                    editor.putString(APP_PREFERENCES_LOGIN, login);
+                    editor.apply();
+                    Intent intent = new Intent(MainActivity.this, EventActivity.class);
+                    startActivity(intent);
+                }else {
+                   // Toast.makeText(MainActivity.this, "Login error", Toast.LENGTH_SHORT).show();
+                }
+                /*if(cursor != null || cursor.isNull(0)) {
                     if (getEtPassword.getText().toString().equals(cursor.getString(0))) {
                         mSettings = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = mSettings.edit();
@@ -74,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 } else {
                     Toast.makeText(MainActivity.this, "Login error", Toast.LENGTH_SHORT).show();
-                }
+                }*/
             }
         });
 
