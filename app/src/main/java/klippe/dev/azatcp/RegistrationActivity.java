@@ -40,7 +40,7 @@ public class RegistrationActivity extends AppCompatActivity {
     EditText getEtNameRegister;
 
     @BindView(R.id.imvUserPic)
-    CircleImageView getImvUserPicture;
+    ImageView getImvUserPicture;
 
     @BindView(R.id.btnRegister)
     Button getBtnRegister;
@@ -60,8 +60,8 @@ public class RegistrationActivity extends AppCompatActivity {
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
             uriToImage = data.getData();
             data.getData().getEncodedPath();
-           // imagePath = getPath(getApplicationContext(), uriToImage);
-            imagePath = data.getData().getPath();
+            imagePath = getPath(getApplicationContext(), uriToImage);
+            //imagePath = data.getData().getPath();
 
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uriToImage);

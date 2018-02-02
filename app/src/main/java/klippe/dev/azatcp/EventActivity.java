@@ -71,7 +71,7 @@ public class EventActivity extends AppCompatActivity {
         super.onResume();
         cursorImage = db.getUserPic(login);
         Uri pathToImg = Uri.parse(cursorImage.getString(0));
-        Picasso.with(getApplicationContext()).load(pathToImg).into(getIvProfile);
+       // Picasso.with(getApplicationContext()).load(pathToImg).into(getIvProfile);
     }
 
     @Override
@@ -87,8 +87,9 @@ public class EventActivity extends AppCompatActivity {
             login = mSettings.getString(APP_PREFERENCES_LOGIN, "");
         }
 
-
-        //getIvProfile.setImageURI(pathToImg);
+        cursorImage = db.getUserPic(login);
+        Uri pathToImg = Uri.parse(cursorImage.getString(0));
+        getIvProfile.setImageURI(pathToImg);
 
         // создаем адаптер
         fillData();
