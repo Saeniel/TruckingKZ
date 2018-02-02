@@ -32,6 +32,7 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class EventActivity extends AppCompatActivity {
 
@@ -44,7 +45,7 @@ public class EventActivity extends AppCompatActivity {
     @BindView(R.id.ivAbout)
     ImageView getIvAbout;
     @BindView(R.id.ivProfile)
-    ImageView getIvProfile;
+    CircleImageView getIvProfile;
     @BindView(R.id.etSearch)
     EditText editText;
     ArrayList<Event> events = new ArrayList<Event>();

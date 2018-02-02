@@ -1,13 +1,20 @@
 package klippe.dev.azatcp;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.provider.Settings;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.SparseIntArray;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,6 +23,7 @@ import android.widget.Toast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Created by Saeniel on 31.01.2018.
@@ -33,7 +41,7 @@ public class RegistrationActivity extends AppCompatActivity {
     EditText getEtNameRegister;
 
     @BindView(R.id.imvUserPic)
-    ImageView getImvUserPicture;
+    CircleImageView getImvUserPicture;
 
     @BindView(R.id.btnRegister)
     Button getBtnRegister;
@@ -46,7 +54,7 @@ public class RegistrationActivity extends AppCompatActivity {
     String imagePath;
 
     private int LOAD_IMAGE_RESULTS = 1;
-
+    private SparseIntArray mErrorString;
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -76,6 +84,7 @@ public class RegistrationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
         ButterKnife.bind(this);
+        mErrorString = new SparseIntArray();
         context = getApplicationContext();
         uriToImage = null;
         imagePath = " ";
@@ -83,12 +92,15 @@ public class RegistrationActivity extends AppCompatActivity {
         getImvUserPicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 // Create the Intent for Image Gallery.
                 Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 // Start new activity with the LOAD_IMAGE_RESULTS to handle back the results when image is picked from the Image Gallery.
                 startActivityForResult(i, LOAD_IMAGE_RESULTS);
             }
         });
+
+
 
         getBtnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
