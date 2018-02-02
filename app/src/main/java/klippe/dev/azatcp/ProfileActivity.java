@@ -1,6 +1,7 @@
 package klippe.dev.azatcp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -8,6 +9,8 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -30,6 +33,10 @@ public class ProfileActivity extends AppCompatActivity {
 
     @BindView(R.id.listView)
     ListView getEventList;
+
+    @BindView(R.id.button)
+    Button getBtnBack;
+
     ArrayList<Event> events = new ArrayList<Event>();
     EventAdapter boxAdapter;
 
@@ -74,5 +81,13 @@ public class ProfileActivity extends AppCompatActivity {
         boxAdapter = new EventAdapter(this, events);
         // настраиваем список
         getEventList.setAdapter(boxAdapter);
+
+        getBtnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ProfileActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }

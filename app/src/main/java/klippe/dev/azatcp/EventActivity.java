@@ -114,7 +114,10 @@ public class EventActivity extends AppCompatActivity {
         Toast.makeText(this, result, Toast.LENGTH_LONG).show();
     }
 
+    @Override
+    public void onBackPressed() {
 
+    }
 }
 
 

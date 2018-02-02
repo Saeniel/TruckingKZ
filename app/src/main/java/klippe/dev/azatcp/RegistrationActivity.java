@@ -18,6 +18,7 @@ import java.io.IOException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Created by Saeniel on 31.01.2018.
@@ -35,7 +36,7 @@ public class RegistrationActivity extends AppCompatActivity {
     EditText getEtNameRegister;
 
     @BindView(R.id.imvUserPic)
-    ImageView getImvUserPicture;
+    CircleImageView getImvUserPicture;
 
     @BindView(R.id.btnRegister)
     Button getBtnRegister;
