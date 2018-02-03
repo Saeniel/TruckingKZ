@@ -40,10 +40,6 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         db = new DatabaseHelper(MainActivity.this);
-
-//        Intent intent = new Intent(MainActivity.this, EventActivity.class);
-//        startActivity(intent);
-
         getBtnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -60,22 +56,8 @@ public class MainActivity extends AppCompatActivity {
                     Intent intent = new Intent(MainActivity.this, EventActivity.class);
                     startActivity(intent);
                 }else {
-                   // Toast.makeText(MainActivity.this, "Login error", Toast.LENGTH_SHORT).show();
+
                 }
-                /*if(cursor != null || cursor.isNull(0)) {
-                    if (getEtPassword.getText().toString().equals(cursor.getString(0))) {
-                        mSettings = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
-                        SharedPreferences.Editor editor = mSettings.edit();
-                        editor.putString(APP_PREFERENCES_LOGIN, login);
-                        editor.apply();
-                        Intent intent = new Intent(MainActivity.this, EventActivity.class);
-                        startActivity(intent);
-                    } else {
-                        Toast.makeText(MainActivity.this, "Login error", Toast.LENGTH_SHORT).show();
-                    }
-                } else {
-                    Toast.makeText(MainActivity.this, "Login error", Toast.LENGTH_SHORT).show();
-                }*/
             }
         });
 

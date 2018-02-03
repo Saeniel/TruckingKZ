@@ -54,27 +54,16 @@ public class RegistrationActivity extends AppCompatActivity {
     String imagePath;
 
     private int LOAD_IMAGE_RESULTS = 1;
-    private SparseIntArray mErrorString;
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        // Here we need to check if the activity that was triggers was the Image Gallery.
-        // If it is the requestCode will match the LOAD_IMAGE_RESULTS value.
-        // If the resultCode is RESULT_OK and there is some data we know that an image was picked.
         if (requestCode == LOAD_IMAGE_RESULTS && resultCode == RESULT_OK && data != null) {
-            // Let's read picked image data - its URI
             Uri pickedImage = data.getData();
-            // Let's read picked image path using content resolver
             String[] filePath = {MediaStore.Images.Media.DATA};
             Cursor cursor = getContentResolver().query(pickedImage, filePath, null, null, null);
             cursor.moveToFirst();
             imagePath = cursor.getString(cursor.getColumnIndex(filePath[0]));
-
-            // Now we need to set the GUI ImageView data with data read from the picked file.
             getImvUserPicture.setImageBitmap(BitmapFactory.decodeFile(imagePath));
-
-            // At the end remember to close the cursor or you will end with the RuntimeException!
             cursor.close();
         }
     }
@@ -84,7 +73,6 @@ public class RegistrationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
         ButterKnife.bind(this);
-        mErrorString = new SparseIntArray();
         context = getApplicationContext();
         uriToImage = null;
         imagePath = " ";
@@ -93,14 +81,10 @@ public class RegistrationActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                // Create the Intent for Image Gallery.
                 Intent i = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                // Start new activity with the LOAD_IMAGE_RESULTS to handle back the results when image is picked from the Image Gallery.
                 startActivityForResult(i, LOAD_IMAGE_RESULTS);
             }
         });
-
-
 
         getBtnRegister.setOnClickListener(new View.OnClickListener() {
             @Override

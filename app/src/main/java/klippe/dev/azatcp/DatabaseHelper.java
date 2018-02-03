@@ -11,10 +11,6 @@ import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
 import java.util.Objects;
 
-/**
- * Created by Saeniel on 31.01.2018.
- */
-
 public class DatabaseHelper extends SQLiteAssetHelper {
 
     private static final String DATABASE_NAME = "sandbox.db";
@@ -26,7 +22,7 @@ public class DatabaseHelper extends SQLiteAssetHelper {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         mContext = context;
     }
-
+    //Получение имени пользователя по логину
     public Cursor getUserName(String login) {
         SQLiteDatabase db = getReadableDatabase();
         SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
@@ -42,6 +38,7 @@ public class DatabaseHelper extends SQLiteAssetHelper {
         return c;
     }
 
+    //Получение аватара из бд по логину
     public Cursor getUserPic(String login) {
         SQLiteDatabase db = getReadableDatabase();
         SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
@@ -57,6 +54,7 @@ public class DatabaseHelper extends SQLiteAssetHelper {
         return c;
     }
 
+    //Добавление пользователя
     public Cursor addUser(String login, String password, String name, String imagePath) {
         SQLiteDatabase db = getWritableDatabase();
         SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
@@ -67,22 +65,7 @@ public class DatabaseHelper extends SQLiteAssetHelper {
         return c;
     }
 
-    public Cursor getUser(String login) {
-        SQLiteDatabase db = getReadableDatabase();
-        SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
-        String sqlTable = "users";
-        qb.setTables(sqlTable);
-        String sql = "SELECT login FROM users WHERE login = '" + login + "'";
-        try {
-            c = db.rawQuery(sql, null);
-            c.moveToFirst();
-        } catch (Exception e) {
-            e.printStackTrace();
-            c = null;
-        }
-        return c;
-    }
-
+    //Авторизация и проверка пароля и логина
     public boolean getUser(String login, String pass) {
         SQLiteDatabase db = getReadableDatabase();
         SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
@@ -93,9 +76,9 @@ public class DatabaseHelper extends SQLiteAssetHelper {
             c = db.rawQuery(sql, null);
             c.moveToFirst();
 
-            if(Objects.equals(c.getString(0), pass)){
+            if (Objects.equals(c.getString(0), pass)) {
                 return true;
-            }else {
+            } else {
                 return false;
             }
         } catch (Exception e) {
@@ -104,13 +87,14 @@ public class DatabaseHelper extends SQLiteAssetHelper {
         return false;
     }
 
+    //Проверяем пустая ли база данных
     public boolean isTableEmpty() {
         SQLiteDatabase database = this.getReadableDatabase();
         int NoOfRows = (int) DatabaseUtils.queryNumEntries(database, "users");
 
-        if (NoOfRows == 0){
+        if (NoOfRows == 0) {
             return true;
-        }else {
+        } else {
             return false;
         }
     }

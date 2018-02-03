@@ -30,10 +30,8 @@ public class EventAdapter extends BaseAdapter implements Filterable {
 
     EventAdapter(Context context, ArrayList<Event> products) {
         ctx = context;
-
         originalEvents = products;
         filteredEvents = products;
-
         lInflater = (LayoutInflater) ctx
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
@@ -103,6 +101,7 @@ public class EventAdapter extends BaseAdapter implements Filterable {
         return box;
     }
 
+    //Фильтр даннных
     @Override
     public Filter getFilter() {
         return mFilter;
