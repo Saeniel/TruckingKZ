@@ -16,13 +16,15 @@ public class Cargo implements Serializable {
     public Cargo() {
     }
 
-    public Cargo(String img, String from, String to, String when, String price, String machineType, boolean isChecked) {
+    public Cargo(String img, String from, String to, String when,
+                 String price, String machineType, String comment, boolean isChecked) {
         this.img = img;
         this.from = from;
         this.to = to;
         this.when = when;
         this.price = price;
         this.machineType = machineType;
+        this.comment = comment;
         this.isChecked = isChecked;
     }
 }

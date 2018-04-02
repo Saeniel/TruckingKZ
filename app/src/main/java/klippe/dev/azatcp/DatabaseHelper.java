@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class DatabaseHelper extends SQLiteAssetHelper {
@@ -97,5 +98,22 @@ public class DatabaseHelper extends SQLiteAssetHelper {
         } else {
             return false;
         }
+    }
+
+    public Cursor getData() {
+
+        ArrayList<Cargo> result = new ArrayList<>();
+
+        SQLiteDatabase db = getReadableDatabase();
+        SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
+        String sqlTable = "cargo";
+
+        qb.setTables(sqlTable);
+        String sql = "SELECT * FROM " + sqlTable;
+
+        Cursor c = db.rawQuery(sql, null);
+        c.moveToFirst();
+
+        return c;
     }
 }

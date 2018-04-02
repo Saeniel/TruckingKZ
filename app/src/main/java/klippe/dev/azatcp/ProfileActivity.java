@@ -64,7 +64,7 @@ public class ProfileActivity extends AppCompatActivity {
         Uri pathToImg = Uri.parse(cursorImage.getString(0));
         getProfileUserPic.setImageURI(pathToImg);
 
-        cargos = (ArrayList<Cargo>) getIntent().getExtras().get("listEvent");
+        cargos = (ArrayList<Cargo>) getIntent().getExtras().get("listCargo");
         boxAdapter = new CargoAdapter(this, cargos);
         // настраиваем список
         getEventList.setAdapter(boxAdapter);

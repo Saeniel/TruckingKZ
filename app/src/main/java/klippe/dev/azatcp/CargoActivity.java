@@ -32,7 +32,7 @@ public class CargoActivity extends AppCompatActivity {
     public static final String APP_PREFERENCES_LOGIN = "login";
 
     @BindView(R.id.lvEventList)
-    ListView getEventList;
+    ListView getCargoList;
 
     @BindView(R.id.ivAbout)
     ImageView getIvAbout;
@@ -47,7 +47,7 @@ public class CargoActivity extends AppCompatActivity {
     CargoAdapter boxAdapter;
     String login;
     SharedPreferences mSettings;
-    private Cursor cursorImage;
+    private Cursor cursorImage, cursorData;
     private DatabaseHelper db;
 
     @Override
@@ -71,12 +71,11 @@ public class CargoActivity extends AppCompatActivity {
             getIvProfile.setImageBitmap(myBitmap);
         }
 
-
         // создаем адаптер
         fillData();
         boxAdapter = new CargoAdapter(this, cargos);
         // настраиваем список
-        getEventList.setAdapter(boxAdapter);
+        getCargoList.setAdapter(boxAdapter);
 
         getIvAbout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,14 +89,14 @@ public class CargoActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(CargoActivity.this, ProfileActivity.class);
-                ArrayList<Cargo> bufevents = new ArrayList<Cargo>();
+                ArrayList<Cargo> bufCargos = new ArrayList<Cargo>();
                 for (Cargo a : cargos
                         ) {
                     if (a.isChecked) {
-                        bufevents.add(a);
+                        bufCargos.add(a);
                     }
                 }
-                intent.putExtra("listEvent", bufevents);
+                intent.putExtra("listCargo", bufCargos);
                 startActivity(intent);
             }
         });
@@ -118,28 +117,23 @@ public class CargoActivity extends AppCompatActivity {
         });
     }
 
-    //Считываем JSON файл из папки ресурсов
-    String readFromAssetJSON() {
-        String json = null;
-        try {
-            InputStream is = getAssets().open("cargo.JSON");
-            int size = is.available();
-            byte[] buffer = new byte[size];
-            is.read(buffer);
-            is.close();
-            json = new String(buffer, "UTF-8");
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-        return json;
-    }
-
     // генерируем данные для адаптера
     void fillData() {
-        Gson gson = new Gson();
-        Cargo[] founderArray = gson.fromJson(readFromAssetJSON(), Cargo[].class);
-        for (int i = 0; i < founderArray.length; i++) {
-            cargos.add(founderArray[i]);
+       cursorData = db.getData();
+        if (cursorData.moveToFirst()) {
+            while (!cursorData.isAfterLast()) {
+                String image = cursorData.getString(0);
+                String from = cursorData.getString(1);
+                String to = cursorData.getString(2);
+                String when = cursorData.getString(3);
+                String price = cursorData.getString(4);
+                String machineType = cursorData.getString(5);
+                String comment = cursorData.getString(6);
+                boolean isChecked = false;
+
+                cargos.add(new Cargo(image, from, to, when, price, machineType, comment, isChecked));
+                cursorData.moveToNext();
+            }
         }
     }
 
