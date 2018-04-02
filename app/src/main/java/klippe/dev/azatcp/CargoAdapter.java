@@ -19,19 +19,19 @@ import java.util.List;
  * Created by Developer on 29.01.2018.
  */
 
-public class EventAdapter extends BaseAdapter implements Filterable {
+public class CargoAdapter extends BaseAdapter implements Filterable {
     Context ctx;
     LayoutInflater lInflater;
-    ArrayList<Event> originalEvents;
-    ArrayList<Event> filteredEvents;
+    ArrayList<Cargo> originalCargos;
+    ArrayList<Cargo> filteredCargos;
     ImageView imageView;
 
     private ItemFilter mFilter = new ItemFilter();
 
-    EventAdapter(Context context, ArrayList<Event> products) {
+    CargoAdapter(Context context, ArrayList<Cargo> products) {
         ctx = context;
-        originalEvents = products;
-        filteredEvents = products;
+        originalCargos = products;
+        filteredCargos = products;
         lInflater = (LayoutInflater) ctx
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
@@ -40,13 +40,13 @@ public class EventAdapter extends BaseAdapter implements Filterable {
     // кол-во элементов
     @Override
     public int getCount() {
-        return filteredEvents.size();
+        return filteredCargos.size();
     }
 
     // элемент по позиции
     @Override
     public Object getItem(int position) {
-        return filteredEvents.get(position);
+        return filteredCargos.get(position);
     }
 
     // id по позиции
@@ -61,24 +61,23 @@ public class EventAdapter extends BaseAdapter implements Filterable {
         // используем созданные, но не используемые view
         View view = convertView;
         if (view == null) {
-            view = lInflater.inflate(R.layout.item_event_list, parent, false);
+            view = lInflater.inflate(R.layout.item_cargo_list, parent, false);
         }
-        final Event event = getEvent(position);
-        // заполняем View в пункте списка данными из товаров: наименование, цена
-        // и картинка
-        ((TextView) view.findViewById(R.id.tvTtile)).setText(event.title);
-        ((TextView) view.findViewById(R.id.tvDescription)).setText(event.descriptin);
-        ((TextView) view.findViewById(R.id.tvDate)).setText(event.date);
-        ((TextView) view.findViewById(R.id.tvCategory)).setText(event.category);
-        ((TextView) view.findViewById(R.id.tvPlace)).setText(event.place);
+        final Cargo cargo = getCargo(position);
+
+        ((TextView) view.findViewById(R.id.tvTitleFromTo)).setText(cargo.from + "-" + cargo.to);
+        ((TextView) view.findViewById(R.id.tvComment)).setText(cargo.comment);
+        ((TextView) view.findViewById(R.id.tvWhen)).setText(cargo.when);
+        ((TextView) view.findViewById(R.id.tvPrice)).setText(cargo.price);
+        ((TextView) view.findViewById(R.id.tvMachineType)).setText(cargo.machineType);
         imageView = ((ImageView) view.findViewById(R.id.ivPicture));
 
-        Picasso.with(ctx).load(event.img).into(imageView);
+        Picasso.with(ctx).load(cargo.img).into(imageView);
 
         view.findViewById(R.id.btnAdd).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                event.checked = true;
+                cargo.isChecked = true;
                 view.setVisibility(View.INVISIBLE);
             }
         });
@@ -86,16 +85,16 @@ public class EventAdapter extends BaseAdapter implements Filterable {
     }
 
     // товар по позиции
-    Event getEvent(int position) {
-        return ((Event) getItem(position));
+    Cargo getCargo(int position) {
+        return ((Cargo) getItem(position));
     }
 
     // содержимое корзины
-    ArrayList<Event> getBox() {
-        ArrayList<Event> box = new ArrayList<Event>();
-        for (Event p : originalEvents) {
+    ArrayList<Cargo> getBox() {
+        ArrayList<Cargo> box = new ArrayList<Cargo>();
+        for (Cargo p : originalCargos) {
             // если в корзине
-            if (p.checked)
+            if (p.isChecked)
                 box.add(p);
         }
         return box;
@@ -115,25 +114,19 @@ public class EventAdapter extends BaseAdapter implements Filterable {
 
             FilterResults results = new FilterResults();
 
-            final List<Event> list = originalEvents;
+            final List<Cargo> list = originalCargos;
 
             int count = list.size();
-            final ArrayList<Event> nlist = new ArrayList<Event>(count);
+            final ArrayList<Cargo> nlist = new ArrayList<Cargo>(count);
 
             String filterableString ;
             String filterableString2 ;
-            String filterableString3 ;
-            String filterableString4 ;
 
             for (int i = 0; i < count; i++) {
-                filterableString = list.get(i).title;
-                filterableString2 = list.get(i).category;
-                filterableString3 = list.get(i).place;
-                filterableString4 = list.get(i).descriptin;
+                filterableString = list.get(i).from;
+                filterableString2 = list.get(i).to;
                 if (filterableString.toLowerCase().contains(filterString)||
-                        filterableString2.toLowerCase().contains(filterString)||
-                        filterableString3.toLowerCase().contains(filterString)||
-                        filterableString4.toLowerCase().contains(filterString)) {
+                        filterableString2.toLowerCase().contains(filterString)) {
                     nlist.add(list.get(i));
                 }
             }
@@ -147,10 +140,9 @@ public class EventAdapter extends BaseAdapter implements Filterable {
         @SuppressWarnings("unchecked")
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
-            filteredEvents = (ArrayList<Event>) results.values;
+            filteredCargos = (ArrayList<Cargo>) results.values;
             notifyDataSetChanged();
         }
 
     }
-    }
-
+}

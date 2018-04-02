@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -53,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
                     SharedPreferences.Editor editor = mSettings.edit();
                     editor.putString(APP_PREFERENCES_LOGIN, login);
                     editor.apply();
-                    Intent intent = new Intent(MainActivity.this, EventActivity.class);
+                    Intent intent = new Intent(MainActivity.this, CargoActivity.class);
                     startActivity(intent);
                 }else {
 

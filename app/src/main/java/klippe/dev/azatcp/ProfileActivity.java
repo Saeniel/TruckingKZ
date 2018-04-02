@@ -4,18 +4,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -37,8 +32,8 @@ public class ProfileActivity extends AppCompatActivity {
     @BindView(R.id.button)
     Button getBtnBack;
 
-    ArrayList<Event> events = new ArrayList<Event>();
-    EventAdapter boxAdapter;
+    ArrayList<Cargo> cargos = new ArrayList<Cargo>();
+    CargoAdapter boxAdapter;
 
     private Cursor cursor;
     private Cursor cursorImage;
@@ -69,8 +64,8 @@ public class ProfileActivity extends AppCompatActivity {
         Uri pathToImg = Uri.parse(cursorImage.getString(0));
         getProfileUserPic.setImageURI(pathToImg);
 
-        events = (ArrayList<Event>) getIntent().getExtras().get("listEvent");
-        boxAdapter = new EventAdapter(this, events);
+        cargos = (ArrayList<Cargo>) getIntent().getExtras().get("listEvent");
+        boxAdapter = new CargoAdapter(this, cargos);
         // настраиваем список
         getEventList.setAdapter(boxAdapter);
 

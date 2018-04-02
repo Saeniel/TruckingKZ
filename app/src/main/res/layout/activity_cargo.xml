@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="klippe.dev.azatcp.EventActivity">
+    tools:context="klippe.dev.azatcp.CargoActivity">
 
     <ImageView
         android:id="@+id/ivAbout"
@@ -38,7 +38,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etSearch"
-        tools:listitem="@layout/item_event_list" />
+        tools:listitem="@layout/item_cargo_list" />
 
     <EditText
         android:id="@+id/etSearch"
@@ -48,7 +48,9 @@
         android:layout_marginStart="8dp"
         android:ems="10"
         android:hint="Поиск..."
-        android:inputType="textPersonName"
+        android:inputType="text"
+        android:imeOptions="actionSearch"
+        android:singleLine="true"
         app:layout_constraintEnd_toStartOf="@+id/ivAbout"
         app:layout_constraintStart_toEndOf="@+id/ivProfile"
         app:layout_constraintTop_toTopOf="@+id/ivProfile" />

@@ -1,0 +1,42 @@
+[
+  {
+    "img": "http://www.100book.ru/b1759378.jpg",
+    "from": "г.Минск",
+    "to": "г.Москва",
+    "when": "13:30 26.04.2018",
+    "price": "100 000 руб",
+	"machineType": "Грузовик",
+	"comment": "комментарий",
+	"isChecked": false
+  },
+   {
+    "img": "http://www.100book.ru/b1759378.jpg",
+    "from": "г.Самара",
+    "to": "г.Красноярск",
+    "when": "13:30 26.04.2018",
+    "price": "100 000 руб",
+	"machineType": "Седан",
+	"comment": "комментарий",
+	"isChecked": false
+  },
+   {
+    "img": "http://www.100book.ru/b1759378.jpg",
+    "from": "г.Нальчик",
+    "to": "г.Москва",
+    "when": "13:30 26.04.2018",
+    "price": "100 000 руб",
+	"machineType": "Универсал",
+	"comment": "комментарий",
+	"isChecked": false
+  },
+   {
+    "img": "http://www.100book.ru/b1759378.jpg",
+    "from": "г.Санкт-Петербург",
+    "to": "г.Нижний Тагил",
+    "when": "13:30 26.04.2018",
+    "price": "100 000 руб",
+	"machineType": "Газель",
+	"comment": "комментарий",
+	"isChecked": false
+  }
+]

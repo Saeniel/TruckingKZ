@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Мероприятия</string>
+    <string name="app_name">TruckingKZ</string>
     <string name="stringAbout">Автор проекта: Дата написания: Преподователь:</string>
     <string name="action_settings">Settings</string>
     <string name="text_password">Пароль</string>

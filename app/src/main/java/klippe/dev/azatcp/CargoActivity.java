@@ -1,18 +1,12 @@
 package klippe.dev.azatcp;
 
-import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.DocumentsContract;
-import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -24,7 +18,6 @@ import android.widget.ListView;
 import com.google.gson.Gson;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -33,7 +26,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class EventActivity extends AppCompatActivity {
+public class CargoActivity extends AppCompatActivity {
 
     public static final String APP_PREFERENCES = "mysettings";
     public static final String APP_PREFERENCES_LOGIN = "login";
@@ -50,8 +43,8 @@ public class EventActivity extends AppCompatActivity {
     @BindView(R.id.etSearch)
     EditText editText;
 
-    ArrayList<Event> events = new ArrayList<Event>();
-    EventAdapter boxAdapter;
+    ArrayList<Cargo> cargos = new ArrayList<Cargo>();
+    CargoAdapter boxAdapter;
     String login;
     SharedPreferences mSettings;
     private Cursor cursorImage;
@@ -60,10 +53,10 @@ public class EventActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_event);
+        setContentView(R.layout.activity_cargo);
         ButterKnife.bind(this);
 
-        db = new DatabaseHelper(EventActivity.this);
+        db = new DatabaseHelper(CargoActivity.this);
 
         mSettings = getSharedPreferences(APP_PREFERENCES, Context.MODE_PRIVATE);
         if (mSettings.contains(APP_PREFERENCES_LOGIN)) {
@@ -81,14 +74,14 @@ public class EventActivity extends AppCompatActivity {
 
         // создаем адаптер
         fillData();
-        boxAdapter = new EventAdapter(this, events);
+        boxAdapter = new CargoAdapter(this, cargos);
         // настраиваем список
         getEventList.setAdapter(boxAdapter);
 
         getIvAbout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(EventActivity.this, AboutActivity.class);
+                Intent intent = new Intent(CargoActivity.this, AboutActivity.class);
                 startActivity(intent);
             }
         });
@@ -96,11 +89,11 @@ public class EventActivity extends AppCompatActivity {
         getIvProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(EventActivity.this, ProfileActivity.class);
-                ArrayList<Event> bufevents = new ArrayList<Event>();
-                for (Event a : events
+                Intent intent = new Intent(CargoActivity.this, ProfileActivity.class);
+                ArrayList<Cargo> bufevents = new ArrayList<Cargo>();
+                for (Cargo a : cargos
                         ) {
-                    if (a.checked) {
+                    if (a.isChecked) {
                         bufevents.add(a);
                     }
                 }
@@ -129,7 +122,7 @@ public class EventActivity extends AppCompatActivity {
     String readFromAssetJSON() {
         String json = null;
         try {
-            InputStream is = getAssets().open("event.JSON");
+            InputStream is = getAssets().open("cargo.JSON");
             int size = is.available();
             byte[] buffer = new byte[size];
             is.read(buffer);
@@ -144,9 +137,9 @@ public class EventActivity extends AppCompatActivity {
     // генерируем данные для адаптера
     void fillData() {
         Gson gson = new Gson();
-        Event[] founderArray = gson.fromJson(readFromAssetJSON(), Event[].class);
+        Cargo[] founderArray = gson.fromJson(readFromAssetJSON(), Cargo[].class);
         for (int i = 0; i < founderArray.length; i++) {
-            events.add(founderArray[i]);
+            cargos.add(founderArray[i]);
         }
     }
 
