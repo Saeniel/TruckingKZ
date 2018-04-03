@@ -1,4 +1,4 @@
-package klippe.dev.azatcp;
+package klippe.dev.truckkz;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

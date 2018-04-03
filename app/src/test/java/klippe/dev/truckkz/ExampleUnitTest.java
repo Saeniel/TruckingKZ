@@ -1,4 +1,4 @@
-package klippe.dev.azatcp;
+package klippe.dev.truckkz;
 
 import org.junit.Test;
 

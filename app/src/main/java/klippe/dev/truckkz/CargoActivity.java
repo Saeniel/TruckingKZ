@@ -1,4 +1,4 @@
-package klippe.dev.azatcp;
+package klippe.dev.truckkz;
 
 import android.content.Context;
 import android.content.Intent;
@@ -15,11 +15,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 
-import com.google.gson.Gson;
-
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 
 import butterknife.BindView;
@@ -31,7 +27,7 @@ public class CargoActivity extends AppCompatActivity {
     public static final String APP_PREFERENCES = "mysettings";
     public static final String APP_PREFERENCES_LOGIN = "login";
 
-    @BindView(R.id.lvEventList)
+    @BindView(R.id.lvCargoList)
     ListView getCargoList;
 
     @BindView(R.id.ivAbout)
@@ -47,8 +43,9 @@ public class CargoActivity extends AppCompatActivity {
     CargoAdapter boxAdapter;
     String login;
     SharedPreferences mSettings;
-    private Cursor cursorImage, cursorData;
+    private Cursor cursorImage;
     private DatabaseHelper db;
+    private ArrayList<Cargo> profileCargos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,9 +68,8 @@ public class CargoActivity extends AppCompatActivity {
             getIvProfile.setImageBitmap(myBitmap);
         }
 
-        // создаем адаптер
-        fillData();
-        boxAdapter = new CargoAdapter(this, cargos);
+        boxAdapter = new CargoAdapter(this, false);
+
         // настраиваем список
         getCargoList.setAdapter(boxAdapter);
 
@@ -117,28 +113,46 @@ public class CargoActivity extends AppCompatActivity {
         });
     }
 
-    // генерируем данные для адаптера
-    void fillData() {
-       cursorData = db.getData();
-        if (cursorData.moveToFirst()) {
-            while (!cursorData.isAfterLast()) {
-                String image = cursorData.getString(0);
-                String from = cursorData.getString(1);
-                String to = cursorData.getString(2);
-                String when = cursorData.getString(3);
-                String price = cursorData.getString(4);
-                String machineType = cursorData.getString(5);
-                String comment = cursorData.getString(6);
-                boolean isChecked = false;
 
-                cargos.add(new Cargo(image, from, to, when, price, machineType, comment, isChecked));
-                cursorData.moveToNext();
-            }
-        }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        boxAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void onBackPressed() {
+
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        /*
+        try {
+            ArrayList<Cargo> profileCargos = (ArrayList<Cargo>) getIntent().getExtras().get("profileCargos");
+            if (!profileCargos.equals(null)) {
+                for (int i = 0; i < profileCargos.size(); i++) {
+                    Cargo c = profileCargos.get(i);
+                    for (int j = 0; j < cargos.size(); j++) {
+                        if (c.from.equals(cargos.get(j).from) &&
+                                c.to.equals(cargos.get(j).to) &&
+                                c.machineType.equals(cargos.get(j).machineType) &&
+                                c.price.equals(cargos.get(j).price)) {
+                            cargos.get(j).isChecked = true;
+                        } else {
+                            cargos.get(j).isChecked = false;
+                        }
+                    }
+                }
+            }
+            getCargoList = null;
+            boxAdapter = new CargoAdapter(this, cargos);
+            getCargoList.setAdapter(boxAdapter);
+        } catch (Exception e) {
+
+        }
+        */
     }
 }
 

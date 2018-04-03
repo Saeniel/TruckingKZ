@@ -1,4 +1,4 @@
-package klippe.dev.azatcp;
+package klippe.dev.truckkz;
 
 import java.io.Serializable;
 
@@ -12,6 +12,7 @@ public class Cargo implements Serializable {
     String machineType;
     String comment;
     boolean isChecked;
+    int priceTemp;
 
     public Cargo() {
     }
@@ -26,5 +27,6 @@ public class Cargo implements Serializable {
         this.machineType = machineType;
         this.comment = comment;
         this.isChecked = isChecked;
+        this.priceTemp = 0;
     }
 }

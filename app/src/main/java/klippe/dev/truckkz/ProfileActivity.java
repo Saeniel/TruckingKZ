@@ -1,4 +1,4 @@
-package klippe.dev.azatcp;
+package klippe.dev.truckkz;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -21,13 +22,13 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class ProfileActivity extends AppCompatActivity {
 
     @BindView(R.id.imvProfileUserPic)
-    CircleImageView getProfileUserPic;
+    ImageView getProfileUserPic;
 
     @BindView(R.id.tvProfileName)
     TextView getProfileName;
 
     @BindView(R.id.listView)
-    ListView getEventList;
+    ListView getCargoList;
 
     @BindView(R.id.button)
     Button getBtnBack;
@@ -65,9 +66,9 @@ public class ProfileActivity extends AppCompatActivity {
         getProfileUserPic.setImageURI(pathToImg);
 
         cargos = (ArrayList<Cargo>) getIntent().getExtras().get("listCargo");
-        boxAdapter = new CargoAdapter(this, cargos);
+        boxAdapter = new CargoAdapter(this, true);
         // настраиваем список
-        getEventList.setAdapter(boxAdapter);
+        getCargoList.setAdapter(boxAdapter);
 
         getBtnBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,5 +77,13 @@ public class ProfileActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(ProfileActivity.this, CargoActivity.class);
+        intent.putExtra("profileCargos", cargos);
+        startActivity(intent);
     }
 }

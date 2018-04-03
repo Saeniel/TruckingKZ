@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="klippe.dev.azatcp.CargoActivity">
+    tools:context="klippe.dev.truckkz.CargoActivity">
 
     <ImageView
         android:id="@+id/ivAbout"
@@ -30,7 +30,7 @@
         app:srcCompat="@drawable/profile" />
 
     <ListView
-        android:id="@+id/lvEventList"
+        android:id="@+id/lvCargoList"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="8dp"

@@ -1,10 +1,13 @@
-package klippe.dev.azatcp;
+package klippe.dev.truckkz;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.EditText;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
@@ -20,19 +23,21 @@ import java.util.List;
  */
 
 public class CargoAdapter extends BaseAdapter implements Filterable {
-    Context ctx;
+    Context context;
     LayoutInflater lInflater;
-    ArrayList<Cargo> originalCargos;
-    ArrayList<Cargo> filteredCargos;
+    List<Cargo> originalCargos;
+    List<Cargo> filteredCargos;
     ImageView imageView;
 
     private ItemFilter mFilter = new ItemFilter();
+    private boolean isSelected = false;
 
-    CargoAdapter(Context context, ArrayList<Cargo> products) {
-        ctx = context;
-        originalCargos = products;
-        filteredCargos = products;
-        lInflater = (LayoutInflater) ctx
+    CargoAdapter(Context context,/* ArrayList<Cargo> products,*/ boolean isSelected) {
+        this.context = context;
+        this.isSelected = isSelected;
+        originalCargos = isSelected ? CargoStorage.selectedCargos : CargoStorage.notSelectedCargos;
+        filteredCargos = originalCargos;
+        lInflater = (LayoutInflater) this.context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
     }
@@ -65,20 +70,67 @@ public class CargoAdapter extends BaseAdapter implements Filterable {
         }
         final Cargo cargo = getCargo(position);
 
+        /*
+        if(cargo.isChecked) {
+            view.findViewById(R.id.btnAdd).setVisibility(View.GONE);
+        } else view.findViewById(R.id.btnAdd).setVisibility(View.VISIBLE);
+        */
+
         ((TextView) view.findViewById(R.id.tvTitleFromTo)).setText(cargo.from + "-" + cargo.to);
         ((TextView) view.findViewById(R.id.tvComment)).setText(cargo.comment);
         ((TextView) view.findViewById(R.id.tvWhen)).setText(cargo.when);
-        ((TextView) view.findViewById(R.id.tvPrice)).setText(cargo.price);
+
+        if (isSelected) {
+            ((TextView) view.findViewById(R.id.tvPrice)).setText(cargo.priceTemp + " руб");
+        } else {
+            ((TextView) view.findViewById(R.id.tvPrice)).setText(cargo.price + " руб/кг");
+        }
+
         ((TextView) view.findViewById(R.id.tvMachineType)).setText(cargo.machineType);
         imageView = ((ImageView) view.findViewById(R.id.ivPicture));
 
-        Picasso.with(ctx).load(cargo.img).into(imageView);
+        Picasso.with(context).load(cargo.img).into(imageView);
 
         view.findViewById(R.id.btnAdd).setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                cargo.isChecked = true;
-                view.setVisibility(View.INVISIBLE);
+            public void onClick(final View view) {
+                if (!isSelected) {
+                    AlertDialog.Builder alert = new AlertDialog.Builder(context);
+                    alert.setTitle("Вес");
+                    alert.setMessage("Введите количество кг");
+
+                    final EditText input = new EditText(context);
+                    // ввод чисел
+                    input.setInputType(2);
+
+                    alert.setView(input);
+                    alert.setPositiveButton("ОК", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            /*
+                            view.setVisibility(View.INVISIBLE);
+                            cargo.isChecked = true;
+                            */
+
+                            cargo.priceTemp = Integer.parseInt(cargo.price) *
+                                    Integer.parseInt(input.getText().toString());
+                            CargoStorage.notSelectedCargos.remove(cargo);
+                            CargoStorage.selectedCargos.add(cargo);
+                            notifyDataSetChanged();
+                        }
+                    });
+
+                    final AlertDialog dialog = alert.create();
+                    dialog.show();
+
+                } else {
+                    CargoStorage.selectedCargos.remove(cargo);
+                    CargoStorage.notSelectedCargos.add(cargo);
+                    notifyDataSetChanged();
+                    /*
+                    cargo.isChecked = false;
+                    view.setVisibility(View.VISIBLE);
+                    */
+                }
             }
         });
         return view;
@@ -106,7 +158,7 @@ public class CargoAdapter extends BaseAdapter implements Filterable {
         return mFilter;
     }
 
-    class ItemFilter extends Filter{
+    class ItemFilter extends Filter {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
 
@@ -119,13 +171,13 @@ public class CargoAdapter extends BaseAdapter implements Filterable {
             int count = list.size();
             final ArrayList<Cargo> nlist = new ArrayList<Cargo>(count);
 
-            String filterableString ;
-            String filterableString2 ;
+            String filterableString;
+            String filterableString2;
 
             for (int i = 0; i < count; i++) {
                 filterableString = list.get(i).from;
                 filterableString2 = list.get(i).to;
-                if (filterableString.toLowerCase().contains(filterString)||
+                if (filterableString.toLowerCase().contains(filterString) ||
                         filterableString2.toLowerCase().contains(filterString)) {
                     nlist.add(list.get(i));
                 }

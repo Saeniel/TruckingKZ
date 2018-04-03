@@ -1,20 +1,13 @@
-package klippe.dev.azatcp;
+package klippe.dev.truckkz;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.provider.Settings;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.util.SparseIntArray;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -41,7 +34,7 @@ public class RegistrationActivity extends AppCompatActivity {
     EditText getEtNameRegister;
 
     @BindView(R.id.imvUserPic)
-    CircleImageView getImvUserPicture;
+    ImageView getImvUserPicture;
 
     @BindView(R.id.btnRegister)
     Button getBtnRegister;
