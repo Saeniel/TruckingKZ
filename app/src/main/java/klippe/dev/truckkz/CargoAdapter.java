@@ -29,10 +29,12 @@ public class CargoAdapter extends BaseAdapter implements Filterable {
     List<Cargo> filteredCargos;
     ImageView imageView;
 
-    private ItemFilter mFilter = new ItemFilter();
+
+    private ItemFilterFrom mFilter = new ItemFilterFrom();
+
     private boolean isSelected = false;
 
-    CargoAdapter(Context context,/* ArrayList<Cargo> products,*/ boolean isSelected) {
+    CargoAdapter(Context context, boolean isSelected) {
         this.context = context;
         this.isSelected = isSelected;
         originalCargos = isSelected ? CargoStorage.selectedCargos : CargoStorage.notSelectedCargos;
@@ -70,18 +72,13 @@ public class CargoAdapter extends BaseAdapter implements Filterable {
         }
         final Cargo cargo = getCargo(position);
 
-        /*
-        if(cargo.isChecked) {
-            view.findViewById(R.id.btnAdd).setVisibility(View.GONE);
-        } else view.findViewById(R.id.btnAdd).setVisibility(View.VISIBLE);
-        */
-
-        ((TextView) view.findViewById(R.id.tvTitleFromTo)).setText(cargo.from + "-" + cargo.to);
+        ((TextView) view.findViewById(R.id.tvTitleFromTo)).setText("Откуда: " + cargo.from + "\nКуда: " + cargo.to);
         ((TextView) view.findViewById(R.id.tvComment)).setText(cargo.comment);
         ((TextView) view.findViewById(R.id.tvWhen)).setText(cargo.when);
 
         if (isSelected) {
-            ((TextView) view.findViewById(R.id.tvPrice)).setText(cargo.priceTemp + " руб");
+            ((TextView) view.findViewById(R.id.tvPrice)).setText(cargo.priceTemp + " руб, заказано " +
+                    Integer.toString(cargo.priceTemp/Integer.parseInt(cargo.price)) + " кг");
         } else {
             ((TextView) view.findViewById(R.id.tvPrice)).setText(cargo.price + " руб/кг");
         }
@@ -106,11 +103,6 @@ public class CargoAdapter extends BaseAdapter implements Filterable {
                     alert.setView(input);
                     alert.setPositiveButton("ОК", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int whichButton) {
-                            /*
-                            view.setVisibility(View.INVISIBLE);
-                            cargo.isChecked = true;
-                            */
-
                             cargo.priceTemp = Integer.parseInt(cargo.price) *
                                     Integer.parseInt(input.getText().toString());
                             CargoStorage.notSelectedCargos.remove(cargo);
@@ -126,10 +118,6 @@ public class CargoAdapter extends BaseAdapter implements Filterable {
                     CargoStorage.selectedCargos.remove(cargo);
                     CargoStorage.notSelectedCargos.add(cargo);
                     notifyDataSetChanged();
-                    /*
-                    cargo.isChecked = false;
-                    view.setVisibility(View.VISIBLE);
-                    */
                 }
             }
         });
@@ -155,10 +143,11 @@ public class CargoAdapter extends BaseAdapter implements Filterable {
     //Фильтр даннных
     @Override
     public Filter getFilter() {
+
         return mFilter;
     }
 
-    class ItemFilter extends Filter {
+    class ItemFilterFrom extends Filter {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
 
@@ -171,14 +160,14 @@ public class CargoAdapter extends BaseAdapter implements Filterable {
             int count = list.size();
             final ArrayList<Cargo> nlist = new ArrayList<Cargo>(count);
 
-            String filterableString;
-            String filterableString2;
+            String filterableStringFrom;
+            String filterableStringTo;
 
             for (int i = 0; i < count; i++) {
-                filterableString = list.get(i).from;
-                filterableString2 = list.get(i).to;
-                if (filterableString.toLowerCase().contains(filterString) ||
-                        filterableString2.toLowerCase().contains(filterString)) {
+                filterableStringFrom = list.get(i).from;
+                filterableStringTo = list.get(i).to;
+                if (filterableStringFrom.toLowerCase().contains(filterString) ||
+                        filterableStringTo.toLowerCase().contains(filterableStringFrom)) {
                     nlist.add(list.get(i));
                 }
             }
@@ -197,4 +186,5 @@ public class CargoAdapter extends BaseAdapter implements Filterable {
         }
 
     }
+
 }

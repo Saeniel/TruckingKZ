@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorAccent">#e14c34</color>
-    <color name="colorPrimary">#cf3c24</color>
-    <color name="colorPrimaryDark">#c40c0c</color>
+    <color name="colorAccent">#1a237e</color>
+    <color name="colorPrimary">#000051</color>
+    <color name="colorPrimaryDark">#1a237e</color>
     <color name="white_color">#ffffff</color>
     <color name="disabletextcolor">#eeeeee</color>
     <color name="black_color">#000000</color>
     <color name="trans_white">#97ffffff</color>
-    <color name="btn_red">#cf3c24</color>
-    <color name="btn_white_red">#e14c34</color>
+    <color name="btn_red">#536dff</color>
+    <color name="btn_white_red">#536dff</color>
     <color name="transparent">#85d5d4d4</color>
     <color name="full_transparent">#85d5d4d4</color>
 

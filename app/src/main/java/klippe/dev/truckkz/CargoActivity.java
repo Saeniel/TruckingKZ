@@ -1,5 +1,6 @@
 package klippe.dev.truckkz;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -14,9 +15,16 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.Toast;
+
+import com.gun0912.tedpermission.PermissionListener;
+import com.gun0912.tedpermission.TedPermission;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -36,8 +44,11 @@ public class CargoActivity extends AppCompatActivity {
     @BindView(R.id.ivProfile)
     CircleImageView getIvProfile;
 
-    @BindView(R.id.etSearch)
-    EditText editText;
+    @BindView(R.id.etSearchFrom)
+    EditText etSearchFrom;
+
+    @BindView(R.id.etSearchTo)
+            EditText etSearchTo;
 
     ArrayList<Cargo> cargos = new ArrayList<Cargo>();
     CargoAdapter boxAdapter;
@@ -45,13 +56,31 @@ public class CargoActivity extends AppCompatActivity {
     SharedPreferences mSettings;
     private Cursor cursorImage;
     private DatabaseHelper db;
-    private ArrayList<Cargo> profileCargos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cargo);
         ButterKnife.bind(this);
+
+        PermissionListener permissionlistener = new PermissionListener() {
+            @Override
+            public void onPermissionGranted() {
+                Toast.makeText(CargoActivity.this, "Permission Granted", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onPermissionDenied(ArrayList<String> deniedPermissions) {
+                Toast.makeText(CargoActivity.this, "Permission Denied\n" + deniedPermissions.toString(), Toast.LENGTH_SHORT).show();
+            }
+        };
+
+        TedPermission.with(this)
+                .setPermissionListener(permissionlistener)
+                .setDeniedMessage("If you reject permission,you can not use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
+                .setPermissions(Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                .check();
 
         db = new DatabaseHelper(CargoActivity.this);
 
@@ -97,13 +126,30 @@ public class CargoActivity extends AppCompatActivity {
             }
         });
 
-        editText.addTextChangedListener(new TextWatcher() {
+        etSearchFrom.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                boxAdapter.getFilter().filter(s.toString());
+            }
+        });
+
+        etSearchTo.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
             }
 
             @Override
@@ -118,41 +164,6 @@ public class CargoActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         boxAdapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void onBackPressed() {
-
-    }
-
-    @Override
-    protected void onPostResume() {
-        super.onPostResume();
-        /*
-        try {
-            ArrayList<Cargo> profileCargos = (ArrayList<Cargo>) getIntent().getExtras().get("profileCargos");
-            if (!profileCargos.equals(null)) {
-                for (int i = 0; i < profileCargos.size(); i++) {
-                    Cargo c = profileCargos.get(i);
-                    for (int j = 0; j < cargos.size(); j++) {
-                        if (c.from.equals(cargos.get(j).from) &&
-                                c.to.equals(cargos.get(j).to) &&
-                                c.machineType.equals(cargos.get(j).machineType) &&
-                                c.price.equals(cargos.get(j).price)) {
-                            cargos.get(j).isChecked = true;
-                        } else {
-                            cargos.get(j).isChecked = false;
-                        }
-                    }
-                }
-            }
-            getCargoList = null;
-            boxAdapter = new CargoAdapter(this, cargos);
-            getCargoList.setAdapter(boxAdapter);
-        } catch (Exception e) {
-
-        }
-        */
     }
 }
 
