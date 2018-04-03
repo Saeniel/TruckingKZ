@@ -7,6 +7,8 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -28,7 +30,7 @@ public class ProfileActivity extends AppCompatActivity {
     TextView getProfileName;
 
     @BindView(R.id.listView)
-    ListView getCargoList;
+    RecyclerView getCargoList;
 
     @BindView(R.id.button)
     Button getBtnBack;
@@ -65,10 +67,15 @@ public class ProfileActivity extends AppCompatActivity {
         Uri pathToImg = Uri.parse(cursorImage.getString(0));
         getProfileUserPic.setImageURI(pathToImg);
 
-        cargos = (ArrayList<Cargo>) getIntent().getExtras().get("listCargo");
-        boxAdapter = new CargoAdapter(this, true);
+        cargos = new ArrayList<>(CargoStorage.selectedCargos);
+        boxAdapter = new CargoAdapter(this);
+
+        getCargoList.setLayoutManager(new LinearLayoutManager(this));
+
         // настраиваем список
         getCargoList.setAdapter(boxAdapter);
+
+        boxAdapter.updateList(cargos);
 
         getBtnBack.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -9,12 +9,13 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.gun0912.tedpermission.PermissionListener;
@@ -22,9 +23,6 @@ import com.gun0912.tedpermission.TedPermission;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -36,7 +34,7 @@ public class CargoActivity extends AppCompatActivity {
     public static final String APP_PREFERENCES_LOGIN = "login";
 
     @BindView(R.id.lvCargoList)
-    ListView getCargoList;
+    RecyclerView getCargoList;
 
     @BindView(R.id.ivAbout)
     ImageView getIvAbout;
@@ -50,7 +48,8 @@ public class CargoActivity extends AppCompatActivity {
     @BindView(R.id.etSearchTo)
             EditText etSearchTo;
 
-    ArrayList<Cargo> cargos = new ArrayList<Cargo>();
+    ArrayList<Cargo> cargos = new ArrayList<>();
+    ArrayList<Cargo> filteredCargos = new ArrayList<>();
     CargoAdapter boxAdapter;
     String login;
     SharedPreferences mSettings;
@@ -97,10 +96,15 @@ public class CargoActivity extends AppCompatActivity {
             getIvProfile.setImageBitmap(myBitmap);
         }
 
-        boxAdapter = new CargoAdapter(this, false);
+        boxAdapter = new CargoAdapter(this);
+
+        getCargoList.setLayoutManager(new LinearLayoutManager(this));
 
         // настраиваем список
         getCargoList.setAdapter(boxAdapter);
+
+        cargos = new ArrayList<>(CargoStorage.notSelectedCargos);
+        boxAdapter.updateList(cargos);
 
         getIvAbout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,14 +118,14 @@ public class CargoActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(CargoActivity.this, ProfileActivity.class);
-                ArrayList<Cargo> bufCargos = new ArrayList<Cargo>();
+                /*ArrayList<Cargo> bufCargos = new ArrayList<Cargo>();
                 for (Cargo a : cargos
                         ) {
                     if (a.isChecked) {
                         bufCargos.add(a);
                     }
                 }
-                intent.putExtra("listCargo", bufCargos);
+                intent.putExtra("listCargo", bufCargos);*/
                 startActivity(intent);
             }
         });
@@ -137,7 +141,8 @@ public class CargoActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                boxAdapter.getFilter().filter(s.toString());
+                boxAdapter.updateList(filterCargos(etSearchFrom.getText().toString(),
+                        etSearchTo.getText().toString()));
             }
         });
 
@@ -154,16 +159,30 @@ public class CargoActivity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                boxAdapter.getFilter().filter(s.toString());
+                boxAdapter.updateList(filterCargos(etSearchFrom.getText().toString(),
+                        etSearchTo.getText().toString()));
             }
         });
     }
 
+    public ArrayList<Cargo> filterCargos(String from, String to) {
+        ArrayList<Cargo> filtered = new ArrayList<>();
+
+        for(int i = 0; i < cargos.size(); i++) {
+            if(cargos.get(i).from.toLowerCase().contains(from.toLowerCase()) &&
+                    (cargos.get(i).to.toLowerCase().contains(to.toLowerCase()))) {
+                filtered.add(cargos.get(i));
+            }
+        }
+
+        return filtered;
+    }
 
     @Override
     protected void onResume() {
         super.onResume();
-        boxAdapter.notifyDataSetChanged();
+        cargos = new ArrayList<>(CargoStorage.notSelectedCargos);
+        boxAdapter.updateList(cargos);
     }
 }
 

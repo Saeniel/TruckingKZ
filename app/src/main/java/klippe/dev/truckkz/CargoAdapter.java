@@ -3,6 +3,7 @@ package klippe.dev.truckkz;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,47 +23,108 @@ import java.util.List;
  * Created by Developer on 29.01.2018.
  */
 
-public class CargoAdapter extends BaseAdapter implements Filterable {
+public class CargoAdapter extends RecyclerView.Adapter<CargoAdapter.CargoViewHolder> {
     Context context;
-    LayoutInflater lInflater;
     List<Cargo> originalCargos;
-    List<Cargo> filteredCargos;
-    ImageView imageView;
 
-
-    private ItemFilterFrom mFilter = new ItemFilterFrom();
-
-    private boolean isSelected = false;
-
-    CargoAdapter(Context context, boolean isSelected) {
+    CargoAdapter(Context context) {
         this.context = context;
-        this.isSelected = isSelected;
-        originalCargos = isSelected ? CargoStorage.selectedCargos : CargoStorage.notSelectedCargos;
-        filteredCargos = originalCargos;
-        lInflater = (LayoutInflater) this.context
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
+        originalCargos = new ArrayList<>();
     }
 
-    // кол-во элементов
     @Override
-    public int getCount() {
-        return filteredCargos.size();
+    public CargoViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        return new CargoViewHolder(LayoutInflater
+                .from(context)
+                .inflate(R.layout.item_cargo_list, parent, false));
     }
 
-    // элемент по позиции
     @Override
-    public Object getItem(int position) {
-        return filteredCargos.get(position);
+    public void onBindViewHolder(CargoViewHolder holder, int position) {
+
+        final Cargo cargo = originalCargos.get(position);
+
+        holder.tvTitleFromTo.setText("Откуда: " + cargo.from + "\nКуда: " + cargo.to);
+        holder.tvComment.setText(cargo.comment);
+        holder.tvWhen.setText(cargo.when);
+
+        if (cargo.isChecked) {
+            holder.tvPrice.setText(cargo.priceTemp + " руб, заказано " +
+                    Integer.toString(cargo.priceTemp / Integer.parseInt(cargo.price)) + " кг");
+        } else {
+            holder.tvPrice.setText(cargo.price + " руб/кг");
+        }
+
+        holder.tvMachineType.setText(cargo.machineType);
+
+        holder.btnAdd.setRotation(cargo.isChecked ? 45 : 0);
+
+        holder.btnAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(final View view) {
+
+                if (!cargo.isChecked) {
+
+                    AlertDialog.Builder alert = new AlertDialog.Builder(context);
+                    alert.setTitle("Вес");
+                    alert.setMessage("Введите количество кг");
+
+                    final EditText input = new EditText(context);
+                    // ввод чисел
+                    input.setInputType(2);
+
+                    alert.setView(input);
+                    alert.setPositiveButton("ОК", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int whichButton) {
+                            cargo.priceTemp = Integer.parseInt(cargo.price) *
+                                    Integer.parseInt(input.getText().toString());
+                            cargo.isChecked = true;
+                            CargoStorage.notSelectedCargos.remove(cargo);
+                            originalCargos.remove(cargo);
+                            CargoStorage.selectedCargos.add(cargo);
+                            notifyDataSetChanged();
+                        }
+                    });
+
+                    final AlertDialog dialog = alert.create();
+                    dialog.show();
+                } else {
+                    cargo.isChecked = false;
+                    CargoStorage.notSelectedCargos.add(cargo);
+                    originalCargos.remove(cargo);
+                    CargoStorage.selectedCargos.remove(cargo);
+                    notifyDataSetChanged();
+                }
+            }
+        });
     }
 
-    // id по позиции
+
+
     @Override
-    public long getItemId(int position) {
-        return position;
+    public int getItemCount() {
+        return originalCargos.size();
     }
 
-    // пункт списка
+    class CargoViewHolder extends RecyclerView.ViewHolder {
+
+        public TextView tvTitleFromTo, tvComment, tvPrice, tvWhen, tvMachineType;
+        public ImageView ivPicture, btnAdd;
+
+        public CargoViewHolder(View itemView) {
+            super(itemView);
+            tvTitleFromTo = itemView.findViewById(R.id.tvTitleFromTo);
+            tvComment = itemView.findViewById(R.id.tvComment);
+            tvPrice = itemView.findViewById(R.id.tvPrice);
+            tvWhen = itemView.findViewById(R.id.tvWhen);
+            tvMachineType = itemView.findViewById(R.id.tvMachineType);
+            ivPicture = itemView.findViewById(R.id.ivPicture);
+            btnAdd = itemView.findViewById(R.id.btnAdd);
+        }
+    }
+
+
+   /* // пункт списка
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         // используем созданные, но не используемые view
@@ -84,9 +146,7 @@ public class CargoAdapter extends BaseAdapter implements Filterable {
         }
 
         ((TextView) view.findViewById(R.id.tvMachineType)).setText(cargo.machineType);
-        imageView = ((ImageView) view.findViewById(R.id.ivPicture));
-
-        Picasso.with(context).load(cargo.img).into(imageView);
+        //imageView = ((ImageView) view.findViewById(R.id.ivPicture));
 
         view.findViewById(R.id.btnAdd).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -122,69 +182,12 @@ public class CargoAdapter extends BaseAdapter implements Filterable {
             }
         });
         return view;
-    }
+    }*/
 
-    // товар по позиции
-    Cargo getCargo(int position) {
-        return ((Cargo) getItem(position));
-    }
-
-    // содержимое корзины
-    ArrayList<Cargo> getBox() {
-        ArrayList<Cargo> box = new ArrayList<Cargo>();
-        for (Cargo p : originalCargos) {
-            // если в корзине
-            if (p.isChecked)
-                box.add(p);
-        }
-        return box;
-    }
-
-    //Фильтр даннных
-    @Override
-    public Filter getFilter() {
-
-        return mFilter;
-    }
-
-    class ItemFilterFrom extends Filter {
-        @Override
-        protected FilterResults performFiltering(CharSequence constraint) {
-
-            String filterString = constraint.toString().toLowerCase();
-
-            FilterResults results = new FilterResults();
-
-            final List<Cargo> list = originalCargos;
-
-            int count = list.size();
-            final ArrayList<Cargo> nlist = new ArrayList<Cargo>(count);
-
-            String filterableStringFrom;
-            String filterableStringTo;
-
-            for (int i = 0; i < count; i++) {
-                filterableStringFrom = list.get(i).from;
-                filterableStringTo = list.get(i).to;
-                if (filterableStringFrom.toLowerCase().contains(filterString) ||
-                        filterableStringTo.toLowerCase().contains(filterableStringFrom)) {
-                    nlist.add(list.get(i));
-                }
-            }
-
-            results.values = nlist;
-            results.count = nlist.size();
-
-            return results;
-        }
-
-        @SuppressWarnings("unchecked")
-        @Override
-        protected void publishResults(CharSequence constraint, FilterResults results) {
-            filteredCargos = (ArrayList<Cargo>) results.values;
-            notifyDataSetChanged();
-        }
-
-    }
+   public void updateList(List<Cargo> cargos) {
+       originalCargos.clear();
+       originalCargos.addAll(cargos);
+       notifyDataSetChanged();
+   }
 
 }
